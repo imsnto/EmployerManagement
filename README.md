@@ -48,6 +48,8 @@ EmployerManagement/
 │   ├── __init__.py
 │   ├── settings.py
 │   ├── urls.py
+├── postmanCollection
+│   ├── EmployerManagement.postman_collection.json
 ├── .gitignore            
 ├── LICENSE               
 ├── manage.py            
@@ -96,7 +98,12 @@ EmployerManagement/
    ```bash
    python manage.py runserver
    ```
-   
+
+## Postman Setup
+- Import this file `postmanCollection/EmployerManagement.postman_collection.json` to your postman workspace.
+- Update collection variables `access_token` and `base_url`(if needed).
+- Access token valid for 60 minutes. After 60 minutes you need to generate access token again and update varible `access_token`.
+
 ## Usage
 
 - **Authentication**:
