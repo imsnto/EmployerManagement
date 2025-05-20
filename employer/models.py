@@ -12,3 +12,7 @@ class Employer(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='employers')
+
+
+    def __str__(self):
+        return f"{self.contact_person_name} at {self.company_name}"
