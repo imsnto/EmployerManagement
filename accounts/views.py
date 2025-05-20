@@ -11,6 +11,7 @@ def index(request):
     return HttpResponse("Hello, world. You're at the polls index.")
 
 class UserProfileView(APIView):
+    """This view is responsible for showing the details of the current user"""
     serializer_class = UserProfileSerializer
     def get(self, request):
         user = self.request.user
@@ -23,6 +24,7 @@ class UserProfileView(APIView):
             }, status=status.HTTP_401_UNAUTHORIZED)
 
 class UserLoginAPIView(APIView):
+    """This view is responsible for login and getting refresh and access token"""
     serializer_class = UserLoginSerializer
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
@@ -45,6 +47,7 @@ class UserLoginAPIView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class UserRegistrationView(APIView):
+    """This view is responsible for registering a new user"""
     serializer_class = UserRegisterSerializer
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
