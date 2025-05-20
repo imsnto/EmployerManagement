@@ -18,7 +18,9 @@ class UserProfileView(APIView):
             serializer = self.serializer_class(user)
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
-            return Response("You are not authenticated!", status=status.HTTP_401_UNAUTHORIZED)
+            return Response({
+                "error": "You are not authenticated!"
+            }, status=status.HTTP_401_UNAUTHORIZED)
 
 class UserLoginAPIView(APIView):
     serializer_class = UserLoginSerializer
@@ -36,7 +38,9 @@ class UserLoginAPIView(APIView):
                     'access': str(refresh.access_token),
                 }, status=status.HTTP_200_OK)
             else:
-                return Response("Invalid credentials", status=status.HTTP_401_UNAUTHORIZED)
+                return Response({
+                    "error": "Invalid credentials"
+                }, status=status.HTTP_401_UNAUTHORIZED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
