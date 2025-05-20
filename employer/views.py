@@ -1,12 +1,13 @@
 from django.http import Http404
 from rest_framework import status
+from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .models import Employer
 from .serializers import EmployerSerializer
-
+from .permissions import IsOwnerOfEmployer
 
 class ListCreateEmployerAPIView(APIView):
     permission_classes = [IsAuthenticated]
@@ -20,18 +21,20 @@ class ListCreateEmployerAPIView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def get(self, request, *args, **kwargs):
-        employers = Employer.objects.all()
+        employers = Employer.objects.filter(user=request.user)
         serializer = EmployerSerializer(employers, many=True)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class EmployerDetailUpdateDeleteAPIView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsOwnerOfEmployer]
 
     def get_object(self, pk):
         try:
-            return Employer.objects.get(pk=pk)
+            employer = get_object_or_404(Employer, pk=pk)
+            self.check_object_permissions(self.request, employer)
+            return employer
         except Employer.DoesNotExist:
             raise Http404
 
